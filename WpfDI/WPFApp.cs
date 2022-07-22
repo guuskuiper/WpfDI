@@ -7,7 +7,6 @@ namespace WPFDI;
 public class WpfApp
 {
     public ServiceCollection Services { get; init; } = new ();
-    private Type? ApplicationStartType { get; set; }
     
     public static WpfApp CreateBuilder()
     {
@@ -17,17 +16,14 @@ public class WpfApp
 
     public WpfApp UseApp<T>() where T : Application
     {
-        Services.AddSingleton<T>();
-        ApplicationStartType = typeof(T);
+        Services.AddSingleton<Application, T>();
         return this;
     }
 
     public void Build()
     {
-        if(ApplicationStartType is null) return;
-        
         ServiceProvider provider = Services.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true });
-        Application app = (Application)provider.GetRequiredService(ApplicationStartType);
+        Application app = provider.GetRequiredService<Application>();
         app.Run();
     }
 }

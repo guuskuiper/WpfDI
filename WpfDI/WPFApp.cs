@@ -1,29 +1,33 @@
 ﻿using System;
 using System.Windows;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace WPFDI;
 
-public class WpfApp
+public sealed class WpfApp
 {
-    public ServiceCollection Services { get; init; } = new ();
+    private readonly IServiceProvider _services;
+
+    internal WpfApp(IServiceProvider services)
+    {
+        _services = services;
+        
+        Logger = _services.GetRequiredService<ILoggerFactory>().CreateLogger(System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name ?? nameof(WpfApp));
+    }
     
-    public static WpfApp CreateBuilder()
-    {
-        var builder = new WpfApp();
-        return builder;
-    }
+    public IServiceProvider Services => _services;
+    
+    public IConfiguration Configuration => _services.GetRequiredService<IConfiguration>();
 
-    public WpfApp UseApp<T>() where T : Application
-    {
-        Services.AddSingleton<Application, T>();
-        return this;
-    }
+    public ILogger Logger { get; }
 
-    public void Build()
+    public static WpfAppBuilder CreateBuilder() => new();
+
+    public void Run()
     {
-        ServiceProvider provider = Services.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true });
-        Application app = provider.GetRequiredService<Application>();
+        Application app = _services.GetRequiredService<Application>();
         app.Run();
     }
 }

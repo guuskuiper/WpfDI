@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Extensions.Logging;
 using WPFDI.ViewModels;
 
 namespace WPFDI
@@ -21,12 +22,13 @@ namespace WPFDI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainViewModel MainViewModel { get; init; }
-        
-        public MainWindow(MainViewModel mainViewModel)
+        private readonly MainViewModel _mainViewModel;
+        private readonly ILogger<MainWindow> _logger;
+
+        public MainWindow(MainViewModel mainViewModel, ILogger<MainWindow> logger)
         {
             InitializeComponent();
-            MainViewModel = mainViewModel;
+            _mainViewModel = mainViewModel;
             DataContext = mainViewModel;
         }
     }

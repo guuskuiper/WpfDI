@@ -1,7 +1,23 @@
-﻿namespace WPFDI.ViewModels;
+﻿using System;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+
+namespace WPFDI.ViewModels;
 
 public class MainViewModel
 {
-    public string Title { get; set; } = "WPF DI";
+    private readonly ILogger<MainViewModel> _logger;
+    private readonly WpfAppOptions _options;
+    
+
+    public MainViewModel(ILogger<MainViewModel> logger, IOptions<WpfAppOptions> options)
+    {
+        _logger = logger;
+        _logger.LogInformation("Created VM");
+
+        _options = options.Value;
+    }
+
+    public string Title => _options.Name;
     public string Content { get; set; } = "Lorem Ipsum, ....";
 }

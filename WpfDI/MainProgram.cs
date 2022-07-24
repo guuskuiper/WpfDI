@@ -1,19 +1,21 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using WPFDI.ViewModels;
+using WpfViewModels;
+using WpfBuilder;
+using WpfViews;
 
-namespace WPFDI;
+namespace WpfDI;
 
 public static class MainProgram
 {
     [STAThread]
-    public static void Main()
+    public static void Main(string[] args)
     {
         var builder = WpfApp.CreateBuilder();
+
+        builder.Configuration.AddCommandLine(args);
 
         builder.Services.AddSingleton<MainWindow>();
         builder.Services.AddSingleton<MainViewModel>();

@@ -1,8 +1,7 @@
-﻿using System;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace WPFDI.ViewModels;
+namespace WpfViewModels;
 
 public class MainViewModel
 {

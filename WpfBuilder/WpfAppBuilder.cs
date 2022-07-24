@@ -1,10 +1,9 @@
-using System;
 using System.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace WPFDI;
+namespace WpfBuilder;
 
 public sealed class WpfAppBuilder
 {
@@ -16,7 +15,8 @@ public sealed class WpfAppBuilder
     {
         Configuration = new ConfigurationManager();
         Configuration.AddJsonFile(AppSettingsJsonFile, optional: true, reloadOnChange: true);
-        
+        Configuration.AddEnvironmentVariables("WPFAPP_");
+
         Services.AddSingleton<IConfiguration>(Configuration);
 
         ConfigureDefaultLogging();

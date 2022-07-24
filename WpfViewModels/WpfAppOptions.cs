@@ -1,6 +1,4 @@
-using System;
-
-namespace WPFDI;
+namespace WpfViewModels;
 
 public class WpfAppOptions
 {

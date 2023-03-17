@@ -7,9 +7,9 @@ namespace WpfViews
     /// </summary>
     public partial class App : Application
     {
-        public App(MainWindow mainWindow)
+        public App()
         {
-            mainWindow.Show();
+            this.InitializeComponent();
         }
     }
 }

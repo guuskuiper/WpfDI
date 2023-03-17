@@ -5,6 +5,16 @@ using Microsoft.Extensions.Logging;
 
 namespace WpfBuilder;
 
+/// <summary>
+/// Provides methods to create a WPF application using Dependency Injection.
+/// Example usage:
+/// var builder = WpfApp.CreateBuilder();
+/// builder.Services.AddSingleton&lt;MainViewModel&gt;();
+/// var app = builder
+///     .UseApp&lt;App&gt;()
+///     .UseWindow&lt;MainWindow&gt;()
+///     .Build();
+/// </summary>
 public sealed class WpfApp
 {
     private readonly IServiceProvider _services;
@@ -12,8 +22,9 @@ public sealed class WpfApp
     internal WpfApp(IServiceProvider services)
     {
         _services = services;
-        
-        Logger = _services.GetRequiredService<ILoggerFactory>().CreateLogger(System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name ?? nameof(WpfApp));
+
+        string loggerName = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name ?? nameof(WpfApp);
+        Logger = _services.GetRequiredService<ILoggerFactory>().CreateLogger(loggerName);
     }
     
     public IServiceProvider Services => _services;
@@ -27,6 +38,10 @@ public sealed class WpfApp
     public void Run()
     {
         Application app = _services.GetRequiredService<Application>();
-        app.Run();
+
+        // construct Window after Application such that Application Resources can be used
+        Window window = _services.GetRequiredService<Window>(); 
+
+        app.Run(window);
     }
 }

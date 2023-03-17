@@ -1,6 +1,7 @@
 using System.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 
 namespace WpfBuilder;
@@ -17,10 +18,18 @@ public sealed class WpfAppBuilder
         Configuration.AddJsonFile(AppSettingsJsonFile, optional: true, reloadOnChange: true);
         Configuration.AddEnvironmentVariables("WPFAPP_");
 
+        Logging = new LoggingBuilder(Services);
+        // By default, add LoggerFactory and Logger services with no providers. This way
+        // when components try to get an ILogger<> from the IServiceProvider, they don't get 'null'.
+        Services.TryAdd(ServiceDescriptor.Singleton<ILoggerFactory, LoggerFactory>());
+        Services.TryAdd(ServiceDescriptor.Singleton(typeof(ILogger<>), typeof(Logger<>)));
+
         Services.AddSingleton<IConfiguration>(Configuration);
 
         ConfigureDefaultLogging();
     }
+
+    public ILoggingBuilder Logging { get; }
     
     public IServiceCollection Services => _services;
     
@@ -32,11 +41,24 @@ public sealed class WpfAppBuilder
         return this;
     }
 
+    public WpfAppBuilder UseWindow<T>() where T : Window
+    {
+        Services.AddSingleton<Window, T>();
+        return this;
+    }
+
     public WpfApp Build()
     {
-        ServiceProvider provider = Services.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true });
+        ServiceProviderOptions serviceProviderOptions = new()
+        {
+            ValidateOnBuild = true, 
+            ValidateScopes = true
+        };
+        
+        
+        IServiceProvider provider = Services.BuildServiceProvider(serviceProviderOptions);
 
-        WpfApp application = new WpfApp(provider);
+        WpfApp application = new(provider);
         
         return application;
     }
@@ -56,5 +78,15 @@ public sealed class WpfAppBuilder
             configure.AddEventLog();
             configure.AddEventSourceLogger();
         });
+    }
+
+    private sealed class LoggingBuilder : ILoggingBuilder
+    {
+        public IServiceCollection Services { get; }
+
+        public LoggingBuilder(IServiceCollection services)
+        {
+            Services = services;
+        }
     }
 }

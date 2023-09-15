@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.Logging;
-using WpfViewModels;
+using ViewModels;
 
 namespace WpfViews
 {

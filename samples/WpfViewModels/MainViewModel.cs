@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace WpfViewModels;
+namespace ViewModels;
 
-public class MainViewModel
+public class MainViewModel : ViewModelBase
 {
     private readonly ILogger<MainViewModel> _logger;
     private readonly WpfAppOptions _options;

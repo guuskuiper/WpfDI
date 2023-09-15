@@ -1,4 +1,6 @@
-﻿Thread.CurrentThread.SetApartmentState(ApartmentState.Unknown);
+﻿using ViewModels;
+
+Thread.CurrentThread.SetApartmentState(ApartmentState.Unknown);
 Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
 
 var builder = WpfApp.CreateBuilder();

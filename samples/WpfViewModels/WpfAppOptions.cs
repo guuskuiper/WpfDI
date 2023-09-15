@@ -1,4 +1,4 @@
-namespace WpfViewModels;
+namespace ViewModels;
 
 public class WpfAppOptions
 {

@@ -6,7 +6,7 @@
         <UseWPF>true</UseWPF>
         <Nullable>enable</Nullable>
         <RootNamespace>WPFBuilder</RootNamespace>
-        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <MinVerTagPrefix>v</MinVerTagPrefix>
         <PackageId>Simple.WPF.DI</PackageId>
         <Title>Simple Dependecy Injection for WPF</Title>
         <Authors>Guus Kuiper</Authors>
@@ -33,6 +33,7 @@
       <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.Logging.EventSource" Version="7.0.0" />
+      <PackageReference Include="MinVer" Version="4.3.0" PrivateAssets="All" />
     </ItemGroup>
 
     <ItemGroup>

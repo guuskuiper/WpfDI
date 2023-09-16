@@ -1,0 +1,43 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: release
+
+env:
+  NuGetDirectory: ${{ github.workspace}}/nuget
+
+on:
+  push:
+    tags:
+    - '*.*.*'
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    
+    - name: Restore dependencies
+      run: dotnet restore
+    
+    - name: Build
+      run: dotnet build -c Release --no-restore
+    
+    - name: Test
+      run: dotnet test -c Release --no-build --verbosity normal
+    
+    - name: Pack
+      run: dotnet pack --configuration Release --output ${{ env.NuGetDirectory }}
+    
+    - name: Publish
+      run: |
+        foreach($file in (Get-ChildItem "${{ env.NuGetDirectory }}" -Recurse -Include *.nupkg)) {
+            dotnet nuget push $file --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json
+        }

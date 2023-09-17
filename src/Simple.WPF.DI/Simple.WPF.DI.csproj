@@ -5,11 +5,11 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <UseWPF>true</UseWPF>
         <Nullable>enable</Nullable>
-        <RootNamespace>WPFBuilder</RootNamespace>
         <MinVerTagPrefix>v</MinVerTagPrefix>
         <PackageId>Simple.WPF.DI</PackageId>
         <Title>Simple Dependecy Injection for WPF</Title>
         <Authors>Guus Kuiper</Authors>
+        <Description>Simple Dependency Injection for WPF</Description>
         <PackageProjectUrl>https://github.com/guuskuiper/WpfDI</PackageProjectUrl>
         <RepositoryUrl>https://github.com/guuskuiper/WpfDI</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
@@ -19,7 +19,7 @@
 
     <ItemGroup>
         <None Include="..\..\LICENSE" Pack="true" PackagePath="\"/>
-        <None Include="README.md" Pack="true" PackagePath="\"/>
+        <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
     <ItemGroup>

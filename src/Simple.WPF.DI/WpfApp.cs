@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace WpfBuilder;
+namespace Simple.WPF.DI;
 
 /// <summary>
 /// Provides methods to create a WPF application using Dependency Injection.

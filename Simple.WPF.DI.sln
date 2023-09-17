@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{1112
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{9F50D1FF-3844-4FDF-9651-FB64797797C7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfBuilder", "src\WpfBuilder\WpfBuilder.csproj", "{70691529-389D-4BE8-8528-2C357DEDB800}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.WPF.DI", "src\Simple.WPF.DI\Simple.WPF.DI.csproj", "{70691529-389D-4BE8-8528-2C357DEDB800}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfViews", "samples\WpfViews\WpfViews.csproj", "{6EE03973-9E82-4D0F-9B27-4EBDA4F89417}"
 EndProject

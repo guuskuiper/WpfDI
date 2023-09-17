@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 
-namespace WpfBuilder;
+namespace Simple.WPF.DI;
 
 public sealed class WpfAppBuilder
 {

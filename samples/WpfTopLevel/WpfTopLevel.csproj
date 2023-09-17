@@ -20,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\WpfBuilder\WpfBuilder.csproj" />
+      <ProjectReference Include="..\..\src\Simple.WPF.DI\Simple.WPF.DI.csproj" />
       <ProjectReference Include="..\WpfViewModels\WpfViewModels.csproj" />
       <ProjectReference Include="..\WpfViews\WpfViews.csproj" />
     </ItemGroup>

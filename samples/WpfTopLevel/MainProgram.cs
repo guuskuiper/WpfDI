@@ -1,4 +1,5 @@
-﻿using ViewModels;
+﻿using Simple.WPF.DI;
+using ViewModels;
 
 Thread.CurrentThread.SetApartmentState(ApartmentState.Unknown);
 Thread.CurrentThread.SetApartmentState(ApartmentState.STA);

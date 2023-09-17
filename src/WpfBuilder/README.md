@@ -12,7 +12,6 @@ Since WPF is Windows only, you need a .Net-windows project.
 Top-level Program.cs:
 ```csharp
 using WpfBuilder;
-using WpfViews;
 
 Thread.CurrentThread.SetApartmentState(ApartmentState.Unknown);
 Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
@@ -22,15 +21,14 @@ var builder = WpfApp.CreateBuilder();
 builder.Services.AddSingleton<MainViewModel>();
 
 var app = builder
-.UseApp<App>()
-.UseWindow<MainWindow>()
-.Build();
+    .UseApp<App>()
+    .UseWindow<MainWindow>()
+    .Build();
 
 app.Run();
 ```
 
 Inject a MainViewModel into the MainWindow:
-
 ```csharp
 
 public partial class MainWindow : Window
@@ -45,3 +43,8 @@ public partial class MainWindow : Window
     }
 }
 ```
+
+When starting with the default WPF project template, a different entry-point is already defined on the App.  
+This conflict with the top-level Program.cs which is now used as and entry point that sets up Dependency Injection and start the WPF GUI. 
+Remove this by changing the "App.xml" properties to the "Page" build action. 
+This prevents and error that there are 2 entry points in the application.

@@ -48,3 +48,33 @@ When starting with the default WPF project template, a different entry-point is 
 This conflict with the top-level Program.cs which is now used as and entry point that sets up Dependency Injection and start the WPF GUI. 
 Remove this by changing the "App.xml" properties to the "Page" build action. 
 This prevents and error that there are 2 entry points in the application.
+
+## Inject into UserControls
+
+It's not possible in WPF to use contructor injection. 
+One possible workaround is to create a static `ServiceProvider` in the `App` class.
+```csharp
+public partial class App : Application
+{
+	public App(IServiceProvider serviceProvider)
+	{
+		ServiceProvider = serviceProvider;
+	}
+
+	public static IServiceProvider ServiceProvider { get; private set; } = default!;
+}
+```
+
+Use this `ServiceProvider` in the contructor of the `UserControl`.
+```csharp 
+public partial class MyUserControl : UserControl
+{
+    private readonly MainViewModel = mainViewModel;
+
+    public MyUserControl()
+    {
+        mainViewModel = App.ServiceProvider.GetRequiredService<MainViewModel>();
+    }
+}
+```
+

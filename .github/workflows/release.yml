@@ -16,6 +16,8 @@ jobs:
 
     runs-on: windows-latest
 
+    environment: default
+
     steps:
     - uses: actions/checkout@v3
     

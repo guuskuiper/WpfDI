@@ -33,9 +33,11 @@ public sealed class WpfApp
 
     public ILogger Logger { get; }
 
-    public static WpfAppBuilder CreateBuilder() => new();
+	public static WpfAppBuilder CreateBuilder() => new(null);
 
-    public void Run()
+	public static WpfAppBuilder CreateBuilder(string[] args) => new(args);
+
+	public void Run()
     {
         Application app = _services.GetRequiredService<Application>();
 

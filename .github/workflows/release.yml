@@ -16,6 +16,8 @@ jobs:
 
     runs-on: windows-latest
 
+    environment: default
+
     steps:
     - uses: actions/checkout@v3
     
@@ -39,5 +41,5 @@ jobs:
     - name: Publish
       run: |
         foreach($file in (Get-ChildItem "${{ env.NuGetDirectory }}" -Recurse -Include *.nupkg)) {
-            dotnet nuget push $file --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json
+            dotnet nuget push $file --source "${{ vars.NUGET_URL }}" --api-key "${{ secrets.NUGET_API_KEY }}" 
         }

@@ -1,5 +1,7 @@
 ﻿# Simple.WPF.DI
 [![.NET](https://github.com/guuskuiper/WpfDI/actions/workflows/dotnet.yml/badge.svg)](https://github.com/guuskuiper/WpfDI/actions/workflows/dotnet.yml)
+[![NuGet](https://img.shields.io/nuget/dt/Simple.WPF.DI.svg)](https://www.nuget.org/packages/Simple.WPF.DI) 
+[![NuGet](https://img.shields.io/nuget/vpre/Simple.WPF.DI.svg)](https://www.nuget.org/packages/Simple.WPF.DI)
 
 ## Install
 

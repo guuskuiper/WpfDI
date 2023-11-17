@@ -94,8 +94,8 @@ public sealed class WpfAppBuilder
     private static void AddHostConfiguration(IConfiguration configuration)
     {
 	    string environmentName = Environments.Production;
-	    Assembly executingAssembly = Assembly.GetExecutingAssembly();
-	    AssemblyConfigurationAttribute? assemblyConfigurationAttribute = executingAssembly.GetCustomAttribute<AssemblyConfigurationAttribute>();
+        Assembly? executingAssembly = Assembly.GetEntryAssembly();
+	    AssemblyConfigurationAttribute? assemblyConfigurationAttribute = executingAssembly?.GetCustomAttribute<AssemblyConfigurationAttribute>();
 	    if (assemblyConfigurationAttribute != null)
 	    {
 		    environmentName = assemblyConfigurationAttribute.Configuration == "Debug"
@@ -103,7 +103,7 @@ public sealed class WpfAppBuilder
 			    : Environments.Production;
 	    }
 	    configuration[HostDefaults.EnvironmentKey] = environmentName;
-	    configuration[HostDefaults.ApplicationKey] = executingAssembly.GetName().Name;
+	    configuration[HostDefaults.ApplicationKey] = executingAssembly?.GetName().Name;
 	    configuration[HostDefaults.ContentRootKey] = AppContext.BaseDirectory;
     }
 
@@ -111,7 +111,7 @@ public sealed class WpfAppBuilder
     {
 	    IHostEnvironment hostEnvironment = new HostEnvironment
 	    {
-		    ApplicationName = configuration[HostDefaults.ApplicationKey] ?? Assembly.GetEntryAssembly()?.GetName().Name ?? "Unknown",
+		    ApplicationName = configuration[HostDefaults.ApplicationKey] ?? "Unknown",
 		    EnvironmentName = configuration[HostDefaults.EnvironmentKey] ?? Environments.Production,
 		    ContentRootPath = configuration[HostDefaults.ContentRootKey] ?? AppContext.BaseDirectory,
 	    };

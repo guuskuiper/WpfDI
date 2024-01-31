@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 
 namespace Simple.WPF.DI;
 
@@ -30,6 +31,8 @@ public sealed class WpfApp
     public IServiceProvider Services => _services;
     
     public IConfiguration Configuration => _services.GetRequiredService<IConfiguration>();
+
+    public IHostEnvironment Environment => _services.GetRequiredService<IHostEnvironment>();
 
     public ILogger Logger { get; }
 

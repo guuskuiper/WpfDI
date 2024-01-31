@@ -35,12 +35,12 @@ public sealed class WpfAppBuilder
         Configuration = new ConfigurationManager();
 
         AddHostConfiguration(Configuration);
-        IHostEnvironment hostEnvironment = CreateHostEnvironment(Configuration);
-        Services.AddSingleton(hostEnvironment);
+        Environment = CreateHostEnvironment(Configuration);
+        Services.AddSingleton(Environment);
 
         Configuration.AddEnvironmentVariables("WPFAPP_");
 		Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-		Configuration.AddJsonFile($"appsettings.{hostEnvironment.EnvironmentName}.json", true);
+		Configuration.AddJsonFile($"appsettings.{Environment.EnvironmentName}.json", true);
 		Configuration.AddEnvironmentVariables();
 		Configuration.AddCommandLine(args ?? Array.Empty<string>());
 
@@ -60,6 +60,8 @@ public sealed class WpfAppBuilder
     public IServiceCollection Services => _services;
     
     public ConfigurationManager Configuration { get; }
+    
+    public IHostEnvironment Environment { get; }
 
     public WpfAppBuilder UseApp<T>() where T : Application
     {

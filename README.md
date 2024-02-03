@@ -80,3 +80,11 @@ public partial class MyUserControl : UserControl
 }
 ```
 
+## IHostedService
+`IHostedSerice`'s that are registered are not automatically start when running the app.
+These services can be started manually by first resolving them from the ServiceProvider:
+```csharp
+IEnumarable<IHosteedService> hostedServices = _services.GetServices<IHostedService>()
+```
+And starting them before calling `app.Run()`, and stopping them after `app.Run()` completed using `StartAsync(token)` and `StopAsync(token)`.
+Consider creating extention methods on `WpfApp` to start / stop these hosted services.

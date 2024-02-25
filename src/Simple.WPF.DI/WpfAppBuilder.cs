@@ -4,13 +4,14 @@ using System.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Diagnostics.Metrics;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Simple.WPF.DI;
 
-public sealed class WpfAppBuilder
+public sealed class WpfAppBuilder : IHostApplicationBuilder
 {
     private readonly ServiceCollection _services = new();
 
@@ -33,6 +34,7 @@ public sealed class WpfAppBuilder
 	internal WpfAppBuilder(string[]? args)
     {
         Configuration = new ConfigurationManager();
+        Properties = new Dictionary<object, object>();
 
         AddHostConfiguration(Configuration);
         Environment = CreateHostEnvironment(Configuration);
@@ -44,6 +46,7 @@ public sealed class WpfAppBuilder
 		Configuration.AddEnvironmentVariables();
 		Configuration.AddCommandLine(args ?? Array.Empty<string>());
 
+		Metrics = new MetricsBuilder(Services);
 		Logging = new LoggingBuilder(Services);
         // By default, add LoggerFactory and Logger services with no providers. This way
         // when components try to get an ILogger<> from the IServiceProvider, they don't get 'null'.
@@ -56,10 +59,19 @@ public sealed class WpfAppBuilder
     }
 
     public ILoggingBuilder Logging { get; }
-    
+    public IMetricsBuilder Metrics { get; }
+
     public IServiceCollection Services => _services;
-    
-    public ConfigurationManager Configuration { get; }
+
+    public void ConfigureContainer<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder> factory, Action<TContainerBuilder>? configure = null) where TContainerBuilder : notnull
+    {
+	    TContainerBuilder containerBuilder = factory.CreateBuilder(Services);
+	    configure?.Invoke(containerBuilder);
+    }
+
+    public IDictionary<object, object> Properties { get; }
+
+    public IConfigurationManager Configuration { get; }
     
     public IHostEnvironment Environment { get; }
 
@@ -158,4 +170,14 @@ public sealed class WpfAppBuilder
             Services = services;
         }
     }
+
+	private sealed class MetricsBuilder : IMetricsBuilder
+	{
+		public IServiceCollection Services { get; }
+
+		public MetricsBuilder(IServiceCollection services)
+		{
+			Services = services;
+		}
+	}
 }

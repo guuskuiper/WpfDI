@@ -30,13 +30,52 @@ public sealed class WpfAppBuilder : IHostApplicationBuilder
     ///     <item><description>enables scope validation on the dependency injection container when <see cref="IHostEnvironment.EnvironmentName"/> is 'Development'</description></item>
     ///   </list>
     /// </remarks>
+    internal WpfAppBuilder() : this(args: null)
+    { }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WpfAppBuilder"/> class with preconfigured defaults.
+    /// </summary>
+    /// <remarks>
+    ///   The following defaults are applied to the returned <see cref="WpfAppBuilder"/>:
+    ///   <list type="bullet">
+    ///     <item><description>set the <see cref="IHostEnvironment.ContentRootPath"/> to the result of <see cref="Directory.GetCurrentDirectory()"/></description></item>
+    ///     <item><description>load app <see cref="IConfiguration"/> from "WPFAPP_" prefixed environment variables</description></item>
+    ///     <item><description>load app <see cref="IConfiguration"/> from 'appsettings.json' and 'appsettings.[<see cref="IHostEnvironment.EnvironmentName"/>].json'</description></item>
+    ///     <item><description>load app <see cref="IConfiguration"/> from environment variables</description></item>
+    ///     <item><description>load app <see cref="IConfiguration"/> from supplied command line args</description></item>
+    ///     <item><description>configure the <see cref="ILoggerFactory"/> to log to the console, debug, and event source output</description></item>
+    ///     <item><description>enables scope validation on the dependency injection container when <see cref="IHostEnvironment.EnvironmentName"/> is 'Development'</description></item>
+    ///   </list>
+    /// </remarks>
     /// <param name="args">The command line args.</param>
-	internal WpfAppBuilder(string[]? args)
-    {
-        Configuration = new ConfigurationManager();
+    internal WpfAppBuilder(string[]? args) : this(new WpfAppBuilderSettings() { Args = args})
+    { }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WpfAppBuilder"/> class with preconfigured defaults.
+    /// </summary>
+    /// <remarks>
+    ///   The following defaults are applied to the returned <see cref="WpfAppBuilder"/>:
+    ///   <list type="bullet">
+    ///     <item><description>set the <see cref="IHostEnvironment.ContentRootPath"/> to the result of <see cref="Directory.GetCurrentDirectory()"/></description></item>
+    ///     <item><description>load app <see cref="IConfiguration"/> from "WPFAPP_" prefixed environment variables</description></item>
+    ///     <item><description>load app <see cref="IConfiguration"/> from 'appsettings.json' and 'appsettings.[<see cref="IHostEnvironment.EnvironmentName"/>].json'</description></item>
+    ///     <item><description>load app <see cref="IConfiguration"/> from environment variables</description></item>
+    ///     <item><description>load app <see cref="IConfiguration"/> from supplied command line args</description></item>
+    ///     <item><description>configure the <see cref="ILoggerFactory"/> to log to the console, debug, and event source output</description></item>
+    ///     <item><description>enables scope validation on the dependency injection container when <see cref="IHostEnvironment.EnvironmentName"/> is 'Development'</description></item>
+    ///   </list>
+    /// </remarks>
+    /// <param name="settings"></param>
+    internal WpfAppBuilder(WpfAppBuilderSettings? settings)
+	{
+		settings ??= new WpfAppBuilderSettings();
+		
+        Configuration = settings.Configuration ?? new ConfigurationManager();
         Properties = new Dictionary<object, object>();
 
-        AddHostConfiguration(Configuration);
+        AddHostConfiguration(settings, Configuration);
         Environment = CreateHostEnvironment(Configuration);
         Services.AddSingleton(Environment);
 
@@ -44,7 +83,7 @@ public sealed class WpfAppBuilder : IHostApplicationBuilder
 		Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 		Configuration.AddJsonFile($"appsettings.{Environment.EnvironmentName}.json", true);
 		Configuration.AddEnvironmentVariables();
-		Configuration.AddCommandLine(args ?? Array.Empty<string>());
+		Configuration.AddCommandLine(settings.Args ?? Array.Empty<string>());
 
 		Metrics = new MetricsBuilder(Services);
 		Logging = new LoggingBuilder(Services);
@@ -105,20 +144,21 @@ public sealed class WpfAppBuilder : IHostApplicationBuilder
     /// <summary>
     /// Set the Configuration key/value for HostDefaults.EnvironmentKey, HostDefaults.ApplicationKey and HostDefaults.ContentRootKey
     /// </summary>
-    private static void AddHostConfiguration(IConfiguration configuration)
+    private static void AddHostConfiguration(WpfAppBuilderSettings settings, IConfiguration configuration)
     {
-	    string environmentName = Environments.Production;
-        Assembly? executingAssembly = Assembly.GetEntryAssembly();
+	    Assembly? executingAssembly = Assembly.GetEntryAssembly();
+        bool isDebug = IsDebugAssembly(executingAssembly);
+	    string environmentName = isDebug ? Environments.Development : Environments.Production;
+
+        configuration[HostDefaults.EnvironmentKey] = settings.EnvironmentName ?? environmentName;
+	    configuration[HostDefaults.ApplicationKey] = settings.ApplicationName ?? executingAssembly?.GetName().Name;
+	    configuration[HostDefaults.ContentRootKey] = settings.ContentRootPath ?? AppContext.BaseDirectory;
+    }
+
+    private static bool IsDebugAssembly(Assembly? executingAssembly)
+    {
 	    AssemblyConfigurationAttribute? assemblyConfigurationAttribute = executingAssembly?.GetCustomAttribute<AssemblyConfigurationAttribute>();
-	    if (assemblyConfigurationAttribute != null)
-	    {
-		    environmentName = assemblyConfigurationAttribute.Configuration == "Debug"
-			    ? Environments.Development
-			    : Environments.Production;
-	    }
-	    configuration[HostDefaults.EnvironmentKey] = environmentName;
-	    configuration[HostDefaults.ApplicationKey] = executingAssembly?.GetName().Name;
-	    configuration[HostDefaults.ContentRootKey] = AppContext.BaseDirectory;
+	    return assemblyConfigurationAttribute?.Configuration == "Debug";
     }
 
     private static IHostEnvironment CreateHostEnvironment(IConfiguration configuration)

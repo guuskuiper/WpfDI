@@ -18,7 +18,7 @@ namespace WpfViews
             _logger = logger;
             _mainViewModel = mainViewModel;
             DataContext = mainViewModel;
-            
+
             _logger.LogInformation("Mainwindow created");
         }
     }

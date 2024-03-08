@@ -27,18 +27,18 @@ public sealed class WpfApp
         string loggerName = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name ?? nameof(WpfApp);
         Logger = _services.GetRequiredService<ILoggerFactory>().CreateLogger(loggerName);
     }
-    
+
     public IServiceProvider Services => _services;
-    
+
     public IConfiguration Configuration => _services.GetRequiredService<IConfiguration>();
 
     public IHostEnvironment Environment => _services.GetRequiredService<IHostEnvironment>();
 
     public ILogger Logger { get; }
 
-	public static WpfAppBuilder CreateBuilder() => new();
+    public static WpfAppBuilder CreateBuilder() => new();
 
-	public static WpfAppBuilder CreateBuilder(string[] args) => new(args);
+    public static WpfAppBuilder CreateBuilder(string[] args) => new(args);
 
     public static WpfAppBuilder CreateBuilder(WpfAppBuilderSettings settings) => new WpfAppBuilder(settings);
 
@@ -47,7 +47,7 @@ public sealed class WpfApp
         Application app = _services.GetRequiredService<Application>();
 
         // construct Window after Application such that Application Resources can be used
-        Window window = _services.GetRequiredService<Window>(); 
+        Window window = _services.GetRequiredService<Window>();
 
         app.Run(window);
     }

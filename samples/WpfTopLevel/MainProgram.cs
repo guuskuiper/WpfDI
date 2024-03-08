@@ -12,7 +12,7 @@ var app = builder
     .UseApp<App>()
     .UseWindow<MainWindow>()
     .Build();
-        
+
 app.Logger.LogInformation("Starting top-level WPF app");
 app.Run();
 app.Logger.LogInformation("Closed top-level WPF app");

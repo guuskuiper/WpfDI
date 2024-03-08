@@ -31,7 +31,8 @@ public sealed class WpfAppBuilder : IHostApplicationBuilder
     ///   </list>
     /// </remarks>
     internal WpfAppBuilder() : this(args: null)
-    { }
+    {
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="WpfAppBuilder"/> class with preconfigured defaults.
@@ -49,8 +50,9 @@ public sealed class WpfAppBuilder : IHostApplicationBuilder
     ///   </list>
     /// </remarks>
     /// <param name="args">The command line args.</param>
-    internal WpfAppBuilder(string[]? args) : this(new WpfAppBuilderSettings() { Args = args})
-    { }
+    internal WpfAppBuilder(string[]? args) : this(new WpfAppBuilderSettings() { Args = args })
+    {
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="WpfAppBuilder"/> class with preconfigured defaults.
@@ -69,9 +71,9 @@ public sealed class WpfAppBuilder : IHostApplicationBuilder
     /// </remarks>
     /// <param name="settings"></param>
     internal WpfAppBuilder(WpfAppBuilderSettings? settings)
-	{
-		settings ??= new WpfAppBuilderSettings();
-		
+    {
+        settings ??= new WpfAppBuilderSettings();
+
         Configuration = settings.Configuration ?? new ConfigurationManager();
         Properties = new Dictionary<object, object>();
 
@@ -80,13 +82,13 @@ public sealed class WpfAppBuilder : IHostApplicationBuilder
         Services.AddSingleton(Environment);
 
         Configuration.AddEnvironmentVariables("WPFAPP_");
-		Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-		Configuration.AddJsonFile($"appsettings.{Environment.EnvironmentName}.json", true);
-		Configuration.AddEnvironmentVariables();
-		Configuration.AddCommandLine(settings.Args ?? Array.Empty<string>());
+        Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+        Configuration.AddJsonFile($"appsettings.{Environment.EnvironmentName}.json", true);
+        Configuration.AddEnvironmentVariables();
+        Configuration.AddCommandLine(settings.Args ?? Array.Empty<string>());
 
-		Metrics = new MetricsBuilder(Services);
-		Logging = new LoggingBuilder(Services);
+        Metrics = new MetricsBuilder(Services);
+        Logging = new LoggingBuilder(Services);
         // By default, add LoggerFactory and Logger services with no providers. This way
         // when components try to get an ILogger<> from the IServiceProvider, they don't get 'null'.
         Services.TryAdd(ServiceDescriptor.Singleton<ILoggerFactory, LoggerFactory>());
@@ -102,16 +104,17 @@ public sealed class WpfAppBuilder : IHostApplicationBuilder
 
     public IServiceCollection Services => _services;
 
-    public void ConfigureContainer<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder> factory, Action<TContainerBuilder>? configure = null) where TContainerBuilder : notnull
+    public void ConfigureContainer<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder> factory,
+        Action<TContainerBuilder>? configure = null) where TContainerBuilder : notnull
     {
-	    TContainerBuilder containerBuilder = factory.CreateBuilder(Services);
-	    configure?.Invoke(containerBuilder);
+        TContainerBuilder containerBuilder = factory.CreateBuilder(Services);
+        configure?.Invoke(containerBuilder);
     }
 
     public IDictionary<object, object> Properties { get; }
 
     public IConfigurationManager Configuration { get; }
-    
+
     public IHostEnvironment Environment { get; }
 
     public WpfAppBuilder UseApp<T>() where T : Application
@@ -128,16 +131,17 @@ public sealed class WpfAppBuilder : IHostApplicationBuilder
 
     public WpfApp Build()
     {
-		ServiceProviderOptions serviceProviderOptions =
-			Environments.Development.Equals(Configuration[HostDefaults.EnvironmentKey], StringComparison.OrdinalIgnoreCase)
-				? new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true }
-				: new ServiceProviderOptions();
+        ServiceProviderOptions serviceProviderOptions =
+            Environments.Development.Equals(Configuration[HostDefaults.EnvironmentKey],
+                StringComparison.OrdinalIgnoreCase)
+                ? new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true }
+                : new ServiceProviderOptions();
 
 
-		IServiceProvider provider = Services.BuildServiceProvider(serviceProviderOptions);
+        IServiceProvider provider = Services.BuildServiceProvider(serviceProviderOptions);
 
         WpfApp application = new(provider);
-        
+
         return application;
     }
 
@@ -146,37 +150,38 @@ public sealed class WpfAppBuilder : IHostApplicationBuilder
     /// </summary>
     private static void AddHostConfiguration(WpfAppBuilderSettings settings, IConfiguration configuration)
     {
-	    Assembly? executingAssembly = Assembly.GetEntryAssembly();
+        Assembly? executingAssembly = Assembly.GetEntryAssembly();
         bool isDebug = IsDebugAssembly(executingAssembly);
-	    string environmentName = isDebug ? Environments.Development : Environments.Production;
+        string environmentName = isDebug ? Environments.Development : Environments.Production;
 
         configuration[HostDefaults.EnvironmentKey] = settings.EnvironmentName ?? environmentName;
-	    configuration[HostDefaults.ApplicationKey] = settings.ApplicationName ?? executingAssembly?.GetName().Name;
-	    configuration[HostDefaults.ContentRootKey] = settings.ContentRootPath ?? AppContext.BaseDirectory;
+        configuration[HostDefaults.ApplicationKey] = settings.ApplicationName ?? executingAssembly?.GetName().Name;
+        configuration[HostDefaults.ContentRootKey] = settings.ContentRootPath ?? AppContext.BaseDirectory;
     }
 
     private static bool IsDebugAssembly(Assembly? executingAssembly)
     {
-	    AssemblyConfigurationAttribute? assemblyConfigurationAttribute = executingAssembly?.GetCustomAttribute<AssemblyConfigurationAttribute>();
-	    return assemblyConfigurationAttribute?.Configuration == "Debug";
+        AssemblyConfigurationAttribute? assemblyConfigurationAttribute =
+            executingAssembly?.GetCustomAttribute<AssemblyConfigurationAttribute>();
+        return assemblyConfigurationAttribute?.Configuration == "Debug";
     }
 
     private static IHostEnvironment CreateHostEnvironment(IConfiguration configuration)
     {
-	    IHostEnvironment hostEnvironment = new HostEnvironment
-	    {
-		    ApplicationName = configuration[HostDefaults.ApplicationKey] ?? "Unknown",
-		    EnvironmentName = configuration[HostDefaults.EnvironmentKey] ?? Environments.Production,
-		    ContentRootPath = configuration[HostDefaults.ContentRootKey] ?? AppContext.BaseDirectory,
-	    };
+        IHostEnvironment hostEnvironment = new HostEnvironment
+        {
+            ApplicationName = configuration[HostDefaults.ApplicationKey] ?? "Unknown",
+            EnvironmentName = configuration[HostDefaults.EnvironmentKey] ?? Environments.Production,
+            ContentRootPath = configuration[HostDefaults.ContentRootKey] ?? AppContext.BaseDirectory,
+        };
 
-	    IFileProvider fileProvider = new PhysicalFileProvider(hostEnvironment.ContentRootPath);
-	    hostEnvironment.ContentRootFileProvider = fileProvider;
+        IFileProvider fileProvider = new PhysicalFileProvider(hostEnvironment.ContentRootPath);
+        hostEnvironment.ContentRootFileProvider = fileProvider;
 
-	    return hostEnvironment;
+        return hostEnvironment;
     }
 
-	private void ConfigureDefaultLogging()
+    private void ConfigureDefaultLogging()
     {
         Services.AddLogging(configure =>
         {
@@ -193,15 +198,15 @@ public sealed class WpfAppBuilder : IHostApplicationBuilder
         });
     }
 
-	private sealed class HostEnvironment : IHostEnvironment
-	{
-		public string EnvironmentName { get; set; } = string.Empty;
-		public string ApplicationName { get; set; } = string.Empty;
-		public string ContentRootPath { get; set; } = string.Empty;
-		public IFileProvider ContentRootFileProvider { get; set; } = null!;
-	}
+    private sealed class HostEnvironment : IHostEnvironment
+    {
+        public string EnvironmentName { get; set; } = string.Empty;
+        public string ApplicationName { get; set; } = string.Empty;
+        public string ContentRootPath { get; set; } = string.Empty;
+        public IFileProvider ContentRootFileProvider { get; set; } = null!;
+    }
 
-	private sealed class LoggingBuilder : ILoggingBuilder
+    private sealed class LoggingBuilder : ILoggingBuilder
     {
         public IServiceCollection Services { get; }
 
@@ -211,13 +216,13 @@ public sealed class WpfAppBuilder : IHostApplicationBuilder
         }
     }
 
-	private sealed class MetricsBuilder : IMetricsBuilder
-	{
-		public IServiceCollection Services { get; }
+    private sealed class MetricsBuilder : IMetricsBuilder
+    {
+        public IServiceCollection Services { get; }
 
-		public MetricsBuilder(IServiceCollection services)
-		{
-			Services = services;
-		}
-	}
+        public MetricsBuilder(IServiceCollection services)
+        {
+            Services = services;
+        }
+    }
 }

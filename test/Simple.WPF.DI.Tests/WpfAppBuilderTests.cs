@@ -21,18 +21,18 @@ namespace Simple.WPF.DI.Tests
             IHostEnvironment hostEnvironment = app.Services.GetRequiredService<IHostEnvironment>();
 
             // The ApplicationName is not equal to "Simple.WPF.DI.Tests", but is created by the testing framework
-            Assert.False(string.IsNullOrEmpty(hostEnvironment.ApplicationName)); 
+            Assert.False(string.IsNullOrEmpty(hostEnvironment.ApplicationName));
 
-            Assert.Equal(Directory.GetCurrentDirectory(), hostEnvironment.ContentRootPath.TrimEnd('\\')); 
+            Assert.Equal(Directory.GetCurrentDirectory(), hostEnvironment.ContentRootPath.TrimEnd('\\'));
         }
-        
+
         [Fact]
         public void AppEnvironment()
         {
             IHostEnvironment hostEnvironment = app.Environment;
 
             // The ApplicationName is not equal to "Simple.WPF.DI.Tests", but is created by the testing framework
-            Assert.False(string.IsNullOrEmpty(hostEnvironment.ApplicationName)); 
+            Assert.False(string.IsNullOrEmpty(hostEnvironment.ApplicationName));
         }
 
         [Fact]

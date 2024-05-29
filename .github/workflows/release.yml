@@ -41,5 +41,5 @@ jobs:
     - name: Publish
       run: |
         foreach($file in (Get-ChildItem "${{ env.NuGetDirectory }}" -Recurse -Include *.nupkg,*.snupkg)) {
-            dotnet nuget push $file --source "${{ vars.NUGET_URL }}" --api-key "${{ secrets.NUGET_API_KEY }}" 
+            dotnet nuget push $file --source "${{ vars.NUGET_URL }}" --api-key "${{ secrets.NUGET_API_KEY }}" --skip-duplicate
         }

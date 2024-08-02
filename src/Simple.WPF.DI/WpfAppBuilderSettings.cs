@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+
 namespace Simple.WPF.DI;
 
 public sealed class WpfAppBuilderSettings
@@ -7,7 +8,7 @@ public sealed class WpfAppBuilderSettings
     /// The command line arguments to add to the <see cref="WpfAppBuilder.Configuration"/>.
     /// </summary>
     public string[]? Args { get; set; }
-    
+
     /// <summary>
     /// Initial configuration sources to be added to the <see cref="WpfAppBuilder.Configuration"/>. These sources can influence
     /// the <see cref="WpfAppBuilder.Environment"/> through the use of <see cref="Microsoft.Extensions.Hosting.HostDefaults"/> keys.

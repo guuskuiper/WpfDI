@@ -7,7 +7,7 @@ public class MainViewModel : ViewModelBase
 {
     private readonly ILogger<MainViewModel> _logger;
     private readonly WpfAppOptions _options;
-    
+
 
     public MainViewModel(ILogger<MainViewModel> logger, IOptions<WpfAppOptions> options)
     {

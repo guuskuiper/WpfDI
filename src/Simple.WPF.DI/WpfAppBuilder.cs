@@ -102,6 +102,12 @@ public sealed class WpfAppBuilder : IHostApplicationBuilder
 
     public IServiceCollection Services => _services;
 
+    /// <summary>
+    /// Used by other DI providers like Autofac, Unity, etc.
+    /// </summary>
+    /// <param name="factory"></param>
+    /// <param name="configure"></param>
+    /// <typeparam name="TContainerBuilder"></typeparam>
     public void ConfigureContainer<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder> factory, Action<TContainerBuilder>? configure = null) where TContainerBuilder : notnull
     {
 	    TContainerBuilder containerBuilder = factory.CreateBuilder(Services);
@@ -132,10 +138,12 @@ public sealed class WpfAppBuilder : IHostApplicationBuilder
 			Environments.Development.Equals(Configuration[HostDefaults.EnvironmentKey], StringComparison.OrdinalIgnoreCase)
 				? new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true }
 				: new ServiceProviderOptions();
-
-
+		
 		IServiceProvider provider = Services.BuildServiceProvider(serviceProviderOptions);
 
+		// Mark the service collection as read-only to prevent future modifications
+		_services.MakeReadOnly();
+		
         WpfApp application = new(provider);
         
         return application;

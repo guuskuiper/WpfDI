@@ -10,6 +10,6 @@ var builder = Host.CreateApplicationBuilder();
 builder.Services.AddSingleton<MainViewModel>();
 builder.Services.Configure<WpfAppOptions>(builder.Configuration.GetRequiredSection(WpfAppOptions.WpfApp));
 
-builder.UseWPFHost<App, MainWindow>();
+builder.AddWPFHost<App, MainWindow>();
 var app = builder.Build();
 app.Run();

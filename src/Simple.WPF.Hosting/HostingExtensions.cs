@@ -6,7 +6,7 @@ namespace Simple.WPF.Hosting;
 
 public static class HostingExtensions
 {
-    public static IHostApplicationBuilder UseWPFHost<TApplication, TWindows>(this IHostApplicationBuilder builder)
+    public static IHostApplicationBuilder AddWPFHost<TApplication, TWindows>(this IHostApplicationBuilder builder)
         where TApplication : Application
         where TWindows : Window
     {

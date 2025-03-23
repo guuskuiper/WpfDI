@@ -1,26 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net9.0-windows;net8.0-windows</TargetFrameworks>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<UseWPF>true</UseWPF>
-		<Nullable>enable</Nullable>
-		<MinVerTagPrefix>v</MinVerTagPrefix>
 		<PackageId>Simple.WPF.DI</PackageId>
 		<Title>Simple Dependecy Injection for WPF</Title>
-		<Authors>Guus Kuiper</Authors>
 		<Description>Simple Dependency Injection for WPF</Description>
-		<PackageProjectUrl>https://github.com/guuskuiper/WpfDI</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/guuskuiper/WpfDI</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
+
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<IncludeSymbols>true</IncludeSymbols>
-		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
-	</PropertyGroup>
+  </PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />

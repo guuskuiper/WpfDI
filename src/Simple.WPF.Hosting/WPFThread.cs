@@ -25,9 +25,9 @@ internal sealed class WPFThread
 
     public void Start() => _uiThread.Start();
 
-    public void Stop() => Application.Current.Dispatcher.InvokeAsync(Shutdown);
+    public void Stop() => Application.Current?.Dispatcher.InvokeAsync(Shutdown);
 
-    private void Shutdown() => Application.Current.Shutdown();
+    private void Shutdown() => Application.Current?.Shutdown();
 
     private void ThreadStart()
     {

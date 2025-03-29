@@ -40,7 +40,7 @@ internal sealed class WPFHostedService : IHostedService
 	/// <returns>A task that represents the asynchronous stop operation.</returns>
 	public async Task StopAsync(CancellationToken cancellationToken)
 	{
-		_logger.LogInformation("WPF thread stopping");
 		await _thread.StopAsync();
+		_logger.LogInformation("WPF thread stopped");
 	}
 }

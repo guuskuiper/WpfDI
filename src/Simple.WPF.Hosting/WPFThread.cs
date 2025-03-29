@@ -13,6 +13,8 @@ internal sealed class WPFThread
 	private readonly IServiceProvider _provider;
 	private readonly Thread _uiThread;
 	private readonly IHostApplicationLifetime _applicationLifetime;
+    private readonly TaskCompletionSource<object> _applicationExited = new();
+    private readonly TaskCompletionSource<object> _applicationStarted = new();
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="WPFThread"/> class.
@@ -37,7 +39,7 @@ internal sealed class WPFThread
 	public Task StartAsync()
     {
         _uiThread.Start();
-        return Task.CompletedTask;
+        return _applicationStarted.Task;
     }
 
     /// <summary>
@@ -46,7 +48,7 @@ internal sealed class WPFThread
 	public Task StopAsync()
     {
         Application.Current?.Dispatcher.InvokeAsync(Shutdown);
-        return Task.CompletedTask;
+        return _applicationExited.Task;
     }
 
     /// <summary>
@@ -71,6 +73,7 @@ internal sealed class WPFThread
 		}
 		Window window = _provider.GetRequiredService<Window>();
 
+        app.Startup += (_, args) => _applicationStarted.SetResult(null!);
 		app.Exit += (sender, e) => HandleApplicationExit();
 
 		app.Run(window);
@@ -81,6 +84,7 @@ internal sealed class WPFThread
 	/// </summary>
 	private void HandleApplicationExit()
 	{
-		_applicationLifetime.StopApplication();
+        _applicationExited.SetResult(null!);
+        _applicationLifetime.StopApplication();
 	}
 }

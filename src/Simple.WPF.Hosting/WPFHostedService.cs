@@ -27,11 +27,10 @@ internal sealed class WPFHostedService : IHostedService
 	/// </summary>
 	/// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
 	/// <returns>A task that represents the asynchronous start operation.</returns>
-	public Task StartAsync(CancellationToken cancellationToken)
+	public async Task StartAsync(CancellationToken cancellationToken)
 	{
-		_thread.Start();
+		await _thread.StartAsync();
 		_logger.LogInformation("WPF thread started");
-		return Task.CompletedTask;
 	}
 
 	/// <summary>
@@ -39,10 +38,9 @@ internal sealed class WPFHostedService : IHostedService
 	/// </summary>
 	/// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
 	/// <returns>A task that represents the asynchronous stop operation.</returns>
-	public Task StopAsync(CancellationToken cancellationToken)
+	public async Task StopAsync(CancellationToken cancellationToken)
 	{
 		_logger.LogInformation("WPF thread stopping");
-		_thread.Stop();
-		return Task.CompletedTask;
+		await _thread.StopAsync();
 	}
 }

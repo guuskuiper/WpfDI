@@ -34,14 +34,22 @@ internal sealed class WPFThread
 	/// <summary>
 	/// Starts the WPF thread.
 	/// </summary>
-	public void Start() => _uiThread.Start();
+	public Task StartAsync()
+    {
+        _uiThread.Start();
+        return Task.CompletedTask;
+    }
 
-	/// <summary>
+    /// <summary>
 	/// Stops the WPF thread.
 	/// </summary>
-	public void Stop() => Application.Current?.Dispatcher.InvokeAsync(Shutdown);
+	public Task StopAsync()
+    {
+        Application.Current?.Dispatcher.InvokeAsync(Shutdown);
+        return Task.CompletedTask;
+    }
 
-	/// <summary>
+    /// <summary>
 	/// Shuts down the WPF application.
 	/// </summary>
 	private void Shutdown() => Application.Current?.Shutdown();

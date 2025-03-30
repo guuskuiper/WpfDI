@@ -13,8 +13,6 @@ Set `<OutputType>Exe</OutputType>` in the `.csproj` file to let Ctrl-C exit the 
 
 ``` dotnet add package Simple.Avalonia.Hosting```
 
-Since WPF is Windows only, you need a .Net-windows project.
-
 ## Usage
 
 ```csharp

@@ -1,5 +1,7 @@
 # Avalonia in Host
 [![.NET](https://github.com/guuskuiper/WpfDI/actions/workflows/dotnet.yml/badge.svg)](https://github.com/guuskuiper/WpfDI/actions/workflows/dotnet.yml)
+[![NuGet](https://img.shields.io/nuget/dt/Simple.Avalonia.Hosting.svg)](https://www.nuget.org/packages/Simple.Avalonia.Hosting)
+[![NuGet](https://img.shields.io/nuget/vpre/Simple.Avalonia.Hosting.svg)](https://www.nuget.org/packages/Simple.Avalonia.Hosting)
 
 Add Avalonia as a HostedService to a Host from [Microsoft.Extensions.Hosting](https://learn.microsoft.com/en-us/dotnet/core/extensions/generic-host?tabs=appbuilder)
 

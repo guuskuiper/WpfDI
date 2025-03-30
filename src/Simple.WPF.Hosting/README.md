@@ -1,4 +1,8 @@
 ﻿# Simple.WPF.Hosting
+[![.NET](https://github.com/guuskuiper/WpfDI/actions/workflows/dotnet.yml/badge.svg)](https://github.com/guuskuiper/WpfDI/actions/workflows/dotnet.yml)
+[![NuGet](https://img.shields.io/nuget/dt/Simple.WPF.Hosting.svg)](https://www.nuget.org/packages/Simple.WPF.Hosting)
+[![NuGet](https://img.shields.io/nuget/vpre/Simple.WPF.Hosting.svg)](https://www.nuget.org/packages/Simple.WPF.Hosting)
+
 
 Add WPF as a HostedService to a Host from Microsoft.Extensions.Hosting.
 

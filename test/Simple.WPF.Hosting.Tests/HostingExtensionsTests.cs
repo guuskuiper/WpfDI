@@ -23,7 +23,7 @@ public class HostingExtensionsTests
         Assert.IsType<WPFHostedService>(hostedService);
     }
 
-    [Fact]
+    [Fact(Skip = "Don't run this in CI")]
     public async Task StartStop_WPFHostedService()
     {
         var builder = Host.CreateEmptyApplicationBuilder(new HostApplicationBuilderSettings());

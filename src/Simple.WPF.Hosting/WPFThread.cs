@@ -36,19 +36,19 @@ internal sealed class WPFThread
 	/// <summary>
 	/// Starts the WPF thread.
 	/// </summary>
-	public Task StartAsync()
+	public Task StartAsync(CancellationToken token)
     {
         _uiThread.Start();
-        return _applicationStarted.Task;
+        return _applicationStarted.Task.WaitAsync(token);
     }
 
     /// <summary>
 	/// Stops the WPF thread.
 	/// </summary>
-	public Task StopAsync()
+	public Task StopAsync(CancellationToken token)
     {
         Application.Current?.Dispatcher.InvokeAsync(Shutdown);
-        return _applicationExited.Task;
+        return _applicationExited.Task.WaitAsync(token);
     }
 
     /// <summary>

@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFrameworks>net9.0-windows;net8.0-windows</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
 
     <Authors>Guus Kuiper</Authors>
@@ -17,7 +16,7 @@
     <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <InternalsVisibleTo Include="$(AssemblyName).Tests" />
   </ItemGroup>

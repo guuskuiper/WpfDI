@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+    <UseWPF>true</UseWPF>
 		<PackageId>Simple.WPF.DI</PackageId>
 		<Title>Simple Dependecy Injection for WPF</Title>
 		<Description>Simple Dependency Injection for WPF</Description>

@@ -1,46 +1,46 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Simple.WPF.Hosting;
+namespace Simple.Avalonia.Hosting;
 
 /// <summary>
-/// A hosted service that manages the lifecycle of a WPF thread.
+/// A hosted service that manages the lifecycle of a Avalonia thread.
 /// </summary>
-internal sealed class WPFHostedService : IHostedService
+internal sealed class AvaloniaHostedService : IHostedService
 {
-	private readonly WPFThread _thread;
-	private readonly ILogger<WPFHostedService> _logger;
+	private readonly AvaloniaThread _thread;
+	private readonly ILogger<AvaloniaHostedService> _logger;
 
 	/// <summary>
-	/// Initializes a new instance of the <see cref="WPFHostedService"/> class.
+	/// Initializes a new instance of the <see cref="AvaloniaHostedService"/> class.
 	/// </summary>
-	/// <param name="thread">The WPF thread to manage.</param>
+	/// <param name="thread">The Avalonia thread to manage.</param>
 	/// <param name="logger">The logger to use for logging information.</param>
-	public WPFHostedService(WPFThread thread, ILogger<WPFHostedService> logger)
+	public AvaloniaHostedService(AvaloniaThread thread, ILogger<AvaloniaHostedService> logger)
 	{
 		_thread = thread;
 		_logger = logger;
 	}
 
 	/// <summary>
-	/// Starts the WPF thread.
+	/// Starts the Avalonia thread.
 	/// </summary>
 	/// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
 	/// <returns>A task that represents the asynchronous start operation.</returns>
 	public async Task StartAsync(CancellationToken cancellationToken)
 	{
 		await _thread.StartAsync(cancellationToken);
-		_logger.LogInformation("WPF thread started");
+		_logger.LogInformation("Avalonia thread started");
 	}
 
 	/// <summary>
-	/// Stops the WPF thread.
+	/// Stops the Avalonia thread.
 	/// </summary>
 	/// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
 	/// <returns>A task that represents the asynchronous stop operation.</returns>
 	public async Task StopAsync(CancellationToken cancellationToken)
 	{
 		await _thread.StopAsync(cancellationToken);
-		_logger.LogInformation("WPF thread stopped");
+		_logger.LogInformation("Avalonia thread stopped");
 	}
 }

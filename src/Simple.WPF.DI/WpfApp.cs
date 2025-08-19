@@ -49,6 +49,11 @@ public sealed class WpfApp
         // construct Window after Application such that Application Resources can be used
         Window window = _services.GetRequiredService<Window>();
 
+        if (app.FindResource(typeof(Window)) is Style style)
+        {
+            window.Style = style;
+        }
+
         app.Run(window);
     }
 }

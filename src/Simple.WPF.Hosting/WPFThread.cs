@@ -73,6 +73,11 @@ internal sealed class WPFThread
 		}
 		Window window = _provider.GetRequiredService<Window>();
 
+        if (app.FindResource(typeof(Window)) is Style style)
+        {
+            window.Style = style;
+        }
+
         app.Startup += (_, args) => _applicationStarted.SetResult(null!);
 		app.Exit += (sender, e) => HandleApplicationExit();
 

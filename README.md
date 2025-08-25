@@ -1,6 +1,6 @@
 ﻿# Simple.WPF.DI
 [![.NET](https://github.com/guuskuiper/WpfDI/actions/workflows/dotnet.yml/badge.svg)](https://github.com/guuskuiper/WpfDI/actions/workflows/dotnet.yml)
-[![NuGet](https://img.shields.io/nuget/dt/Simple.WPF.DI.svg)](https://www.nuget.org/packages/Simple.WPF.DI) 
+[![NuGet](https://img.shields.io/nuget/dt/Simple.WPF.DI.svg)](https://www.nuget.org/packages/Simple.WPF.DI)
 [![NuGet](https://img.shields.io/nuget/vpre/Simple.WPF.DI.svg)](https://www.nuget.org/packages/Simple.WPF.DI)
 
 ## Install
@@ -46,14 +46,14 @@ public partial class MainWindow : Window
 }
 ```
 
-When starting with the default WPF project template, a different entry-point is already defined on the App.  
-This conflict with the top-level Program.cs which is now used as and entry point that sets up Dependency Injection and start the WPF GUI. 
-Remove this by changing the "App.xml" properties to the "Page" build action. 
+When starting with the default WPF project template, a different entry-point is already defined on the App.
+This conflict with the top-level Program.cs which is now used as and entry point that sets up Dependency Injection and start the WPF GUI.
+Remove this by changing the "App.xml" properties to the "Page" build action.
 This prevents and error that there are 2 entry points in the application.
 
 ## Inject into UserControls
 
-It's not possible in WPF to use contructor injection. 
+It's not possible in WPF to use contructor injection.
 One possible workaround is to create a static `ServiceProvider` in the `App` class.
 ```csharp
 public partial class App : Application
@@ -61,6 +61,7 @@ public partial class App : Application
 	public App(IServiceProvider serviceProvider)
 	{
 		ServiceProvider = serviceProvider;
+        InitializeComponent();
 	}
 
 	public static IServiceProvider ServiceProvider { get; private set; } = default!;
@@ -68,7 +69,7 @@ public partial class App : Application
 ```
 
 Use this `ServiceProvider` in the contructor of the `UserControl`.
-```csharp 
+```csharp
 public partial class MyUserControl : UserControl
 {
     private readonly MainViewModel = mainViewModel;

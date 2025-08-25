@@ -71,12 +71,18 @@ internal sealed class WPFThread
 			HandleApplicationExit();
 			return;
 		}
-		Window window = _provider.GetRequiredService<Window>();
+
+        // Queue the creation and showing of the Window, such that it is delayed until after the Application is started using the Run call.
+        Dispatcher.CurrentDispatcher.BeginInvoke(() =>
+        {
+            Window window = _provider.GetRequiredService<Window>();
+            window.Show();
+        });
 
         app.Startup += (_, args) => _applicationStarted.SetResult(null!);
 		app.Exit += (sender, e) => HandleApplicationExit();
 
-		app.Run(window);
+		app.Run();
 	}
 
 	/// <summary>

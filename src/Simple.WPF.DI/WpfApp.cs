@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -46,9 +47,12 @@ public sealed class WpfApp
     {
         Application app = _services.GetRequiredService<Application>();
 
-        // construct Window after Application such that Application Resources can be used
-        Window window = _services.GetRequiredService<Window>();
-
-        app.Run(window);
+        // Queue the creation and showing of the Window, such that it is delayed until after the Application is started using the Run call.
+        Dispatcher.CurrentDispatcher.BeginInvoke(() =>
+        {
+            Window window = _services.GetRequiredService<Window>();
+            window.Show();
+        });
+        app.Run();
     }
 }

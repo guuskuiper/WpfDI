@@ -8,7 +8,7 @@ Add WPF as a HostedService to a Host from Microsoft.Extensions.Hosting.
 
 ## Install
 
-``` dotnet add package Simple.WPF.Hosting``` (not yet available, get the source from https://github.com/guuskuiper/WpfDI/tree/hosting)
+``` dotnet add package Simple.WPF.Hosting```
 
 Since WPF is Windows only, you need a .Net-windows project.
 
@@ -49,7 +49,7 @@ This prevents and error that there are 2 entry points in the application.
 
 ## Inject into UserControls
 
-It's not possible in WPF to use contructor injection.
+It's not possible in WPF to use constructor injection.
 One possible workaround is to create a static `ServiceProvider` in the `App` class.
 ```csharp
 public partial class App : Application
@@ -57,13 +57,14 @@ public partial class App : Application
 	public App(IServiceProvider serviceProvider)
 	{
 		ServiceProvider = serviceProvider;
+		InitializeComponent();
 	}
 
 	public static IServiceProvider ServiceProvider { get; private set; } = default!;
 }
 ```
 
-Use this `ServiceProvider` in the contructor of the `UserControl`.
+Use this `ServiceProvider` in the constructor of the `UserControl`.
 ```csharp
 public partial class MyUserControl : UserControl
 {

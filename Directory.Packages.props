@@ -5,12 +5,12 @@
     <NoWarn>$(NoWarn);NU1507</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Avalonia" Version="11.2.6" />
-    <PackageVersion Include="Avalonia.Desktop" Version="11.2.6" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.2.6" />
-    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.2.6" />
-    <PackageVersion Include="Avalonia.Headless.XUnit" Version="11.2.6" />
-    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.2.6" />
+    <PackageVersion Include="Avalonia" Version="11.3.9" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.3.9" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.9" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.9" />
+    <PackageVersion Include="Avalonia.Headless.XUnit" Version="11.3.9" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.9" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.1" />

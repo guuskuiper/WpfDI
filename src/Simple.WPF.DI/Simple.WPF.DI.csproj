@@ -28,7 +28,4 @@
     <PackageReference Include="Microsoft.Extensions.Logging.EventSource" />
     <PackageReference Include="MinVer" PrivateAssets="All" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.Extensions.Logging.Configuration" />
-  </ItemGroup>
 </Project>

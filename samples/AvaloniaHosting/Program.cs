@@ -12,7 +12,10 @@ var builder = Host.CreateApplicationBuilder(args);
 builder.Services.Configure<WpfAppOptions>(builder.Configuration.GetRequiredSection(WpfAppOptions.WpfApp));
 builder.Services.AddSingleton<MainViewModel>();
 
-builder.AddAvaloniaDesktopHost<MainWindow>(BuildAvaloniaAppFromServiceProvider);
+builder.AddAvaloniaHost<MainWindow, MainView>(
+    BuildAvaloniaAppFromServiceProvider,
+    appBuilder => StartAvaloniaLifetime(appBuilder, args));
+
 var app = builder.Build();
 
 app.Run();
@@ -39,11 +42,27 @@ sealed partial class Program
             .AfterSetup(builder =>
             {
                 // The ApplicationLifetime is null when using the previewer.
-                if (builder.Instance?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                switch (builder.Instance?.ApplicationLifetime)
                 {
-                    AfterDesktopSetup(desktop, serviceProvider);
+                    // The ApplicationLifetime is null when using the previewer.
+                    case IClassicDesktopStyleApplicationLifetime desktop:
+                        AfterDesktopSetup(desktop, serviceProvider);
+                        break;
+                    case ISingleViewApplicationLifetime singleView:
+                        AfterSingleViewSetup(singleView, serviceProvider);
+                        break;
                 }
             });
+
+    private static int StartAvaloniaLifetime(AppBuilder appBuilder, string[] args)
+    {
+        if (OperatingSystem.IsLinux() && Array.Exists(args, arg => arg == "--drm"))
+        {
+            return appBuilder.StartLinuxDrm(args, card: null, 1);
+        }
+
+        return appBuilder.StartWithClassicDesktopLifetime(args);
+    }
 
     private static void AfterDesktopSetup(IClassicDesktopStyleApplicationLifetime desktop, IServiceProvider serviceProvider)
     {
@@ -51,5 +70,13 @@ sealed partial class Program
         MainViewModel mainWindowViewModel = serviceProvider.GetRequiredService<MainViewModel>();
         mainWindow.DataContext = mainWindowViewModel;
         desktop.MainWindow = mainWindow;
+    }
+
+    private static void AfterSingleViewSetup(ISingleViewApplicationLifetime singleView, IServiceProvider serviceProvider)
+    {
+        UserControl mainView = serviceProvider.GetRequiredService<UserControl>();
+        MainViewModel mainViewModel = serviceProvider.GetRequiredService<MainViewModel>();
+        mainView.DataContext = mainViewModel;
+        singleView.MainView = mainView;
     }
 }

@@ -13,6 +13,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" />
     <PackageReference Include="Avalonia.Fonts.Inter" />
+    <PackageReference Include="Avalonia.LinuxFramebuffer" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="appsettings.json" />

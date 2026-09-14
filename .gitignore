@@ -1,5 +1,9 @@
 .idea/
+.vs/
 obj/
 bin/
 
 *.sln.DotSettings.user
+
+// Ignore local NuGet config
+Nuget.Config

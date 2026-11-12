@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +20,9 @@ public static class AvaloniaHostingExtensions
     /// <param name="builder">The host application builder.</param>
     /// <param name="appBuilder">The application builder, also used by the previewer.</param>
     /// <returns>The updated host application builder.</returns>
-    public static IHostApplicationBuilder AddAvaloniaDesktopHost<TWindow>(this IHostApplicationBuilder builder,
+    public static IHostApplicationBuilder AddAvaloniaDesktopHost<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TWindow>(
+        this IHostApplicationBuilder builder,
         Func<IServiceProvider, AppBuilder> appBuilder)
         where TWindow : Window
     {
@@ -40,7 +43,7 @@ public static class AvaloniaHostingExtensions
     /// <param name="builder">The host application builder.</param>
     /// <param name="appBuilder">The application builder, also used by the previewer.</param>
     /// <returns>The updated host application builder.</returns>
-    public static IHostApplicationBuilder AddAvaloniaDesktopHost<TWindow>(this IHostApplicationBuilder builder,
+    public static IHostApplicationBuilder AddAvaloniaDesktopHost<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TWindow>(this IHostApplicationBuilder builder,
         Func<AppBuilder> appBuilder) where TWindow : Window
         => AddAvaloniaDesktopHost<TWindow>(builder, _ => appBuilder());
 
@@ -58,7 +61,9 @@ public static class AvaloniaHostingExtensions
     /// <param name="appBuilder">The application builder, also used by the previewer.</param>
     /// <param name="startLifetime">Starts the selected Avalonia application lifetime.</param>
     /// <returns>The updated host application builder.</returns>
-    public static IHostApplicationBuilder AddAvaloniaHost<TWindow, TView>(
+    public static IHostApplicationBuilder AddAvaloniaHost<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TWindow,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TView>(
         this IHostApplicationBuilder builder,
         Func<IServiceProvider, AppBuilder> appBuilder,
         Func<AppBuilder, int> startLifetime)
@@ -75,7 +80,9 @@ public static class AvaloniaHostingExtensions
     /// <summary>
     /// Adds Avalonia with both a desktop window and a single-view root control.
     /// </summary>
-    public static IHostApplicationBuilder AddAvaloniaHost<TWindow, TView>(
+    public static IHostApplicationBuilder AddAvaloniaHost<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TWindow,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TView>(
         this IHostApplicationBuilder builder,
         Func<AppBuilder> appBuilder,
         Func<AppBuilder, int> startLifetime)

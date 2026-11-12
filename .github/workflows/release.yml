@@ -13,6 +13,8 @@ on:
 
 jobs:
   build:
+    permissions:
+      id-token: write  # enable GitHub OIDC token issuance for this job
 
     runs-on: windows-latest
 
@@ -41,8 +43,15 @@ jobs:
     - name: Pack
       run: dotnet pack --configuration Release --output ${{ env.NuGetDirectory }}
 
+    # Get a short-lived NuGet API key
+    - name: NuGet login (OIDC → temp API key)
+      uses: NuGet/login@v1
+      id: login
+      with:
+        user: ${{ secrets.NUGET_USER }}
+
     - name: Publish
       run: |
         foreach($file in (Get-ChildItem "${{ env.NuGetDirectory }}" -Recurse -Include *.nupkg)) {
-            dotnet nuget push $file --source "${{ vars.NUGET_URL }}" --api-key "${{ secrets.NUGET_API_KEY }}" --skip-duplicate
+            dotnet nuget push $file --source "${{ vars.NUGET_URL }}" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --skip-duplicate
         }

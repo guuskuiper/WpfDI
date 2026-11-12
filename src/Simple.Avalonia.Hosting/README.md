@@ -11,6 +11,9 @@ Internally the Avalonia helper `StartWithClassicDesktopLifetime` is used to setu
 ## Note
 Set `<OutputType>Exe</OutputType>` in the `.csproj` file to let Ctrl-C exit the app.
 
+See the [Native AOT sample](https://github.com/guuskuiper/WpfDI/tree/main/samples/AvaloniaAot)
+for an AOT-published app using this package.
+
 ## Install
 
 ``` dotnet add package Simple.Avalonia.Hosting```

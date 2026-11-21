@@ -11,6 +11,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Simple.WPF.DI;
 
+/// <summary>
+/// Builds a WPF application with dependency injection, configuration, logging, and hosting services.
+/// </summary>
 public sealed class WpfAppBuilder : IHostApplicationBuilder
 {
     private readonly ServiceCollection _services = new();
@@ -99,9 +102,19 @@ public sealed class WpfAppBuilder : IHostApplicationBuilder
         ConfigureDefaultLogging();
     }
 
+    /// <summary>
+    /// Gets the logging configuration builder.
+    /// </summary>
     public ILoggingBuilder Logging { get; }
+
+    /// <summary>
+    /// Gets the metrics configuration builder.
+    /// </summary>
     public IMetricsBuilder Metrics { get; }
 
+    /// <summary>
+    /// Gets the application's dependency-injection service collection.
+    /// </summary>
     public IServiceCollection Services => _services;
 
     /// <summary>
@@ -117,24 +130,44 @@ public sealed class WpfAppBuilder : IHostApplicationBuilder
         configure?.Invoke(containerBuilder);
     }
 
+    /// <summary>
+    /// Gets a dictionary of properties shared with other application-building components.
+    /// </summary>
     public IDictionary<object, object> Properties { get; }
 
+    /// <summary>
+    /// Gets the application's configuration manager.
+    /// </summary>
     public IConfigurationManager Configuration { get; }
 
+    /// <summary>
+    /// Gets the application's host environment.
+    /// </summary>
     public IHostEnvironment Environment { get; }
 
+    /// <summary>
+    /// Registers the WPF <see cref="Application"/> implementation.
+    /// </summary>
+    /// <typeparam name="T">The application type.</typeparam>
     public WpfAppBuilder UseApp<T>() where T : Application
     {
         Services.AddSingleton<Application, T>();
         return this;
     }
 
+    /// <summary>
+    /// Registers the WPF main-window implementation.
+    /// </summary>
+    /// <typeparam name="T">The window type.</typeparam>
     public WpfAppBuilder UseWindow<T>() where T : Window
     {
         Services.AddSingleton<Window, T>();
         return this;
     }
 
+    /// <summary>
+    /// Builds the WPF application.
+    /// </summary>
     public WpfApp Build()
     {
         ServiceProviderOptions serviceProviderOptions =

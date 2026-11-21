@@ -2,6 +2,9 @@
 
 namespace Simple.WPF.DI;
 
+/// <summary>
+/// Configures settings used to create a <see cref="WpfAppBuilder"/>.
+/// </summary>
 public sealed class WpfAppBuilderSettings
 {
     /// <summary>
